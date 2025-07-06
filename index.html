@@ -11,15 +11,12 @@
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2>Contact List</h2>
-      <!-- Cambiado para ir a new.html -->
       <a href="new.html" class="btn btn-success">Add new contact</a>
     </div>
 
-    <!-- Contacts list -->
     <div id="contactsList"></div>
   </div>
 
-  <!-- Script principal -->
   <script>
     let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
 
@@ -40,6 +37,9 @@
               </div>
             </div>
             <div>
+              <button class="btn btn-sm btn-outline-primary me-1" onclick="editContact(${index})">
+                <i class="bi bi-pencil"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger" onclick="deleteContact(${index})">
                 <i class="bi bi-trash"></i>
               </button>
@@ -57,7 +57,11 @@
       }
     }
 
-    // Inicializar lista
+    function editContact(index) {
+      localStorage.setItem('editIndex', index);
+      window.location.href = 'new.html';
+    }
+
     renderContacts();
   </script>
 </body>

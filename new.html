@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+*<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,14 +11,14 @@
 </head>
 <body>
   <div class="container">
-    <h2 class="text-center mb-4">Add a new contact</h2>
+    <h2 class="text-center mb-4" id="formTitle">Add a new contact</h2>
 
     <form onsubmit="handleSave(event)">
       <input type="text" id="name" class="form-control" placeholder="Full Name" required>
       <input type="email" id="email" class="form-control" placeholder="Enter email" required>
       <input type="text" id="phone" class="form-control" placeholder="Enter phone" required>
       <input type="text" id="address" class="form-control" placeholder="Enter address" required>
-      <button type="submit" class="btn btn-primary w-100">save</button>
+      <button type="submit" class="btn btn-primary w-100">Save</button>
     </form>
 
     <div class="text-center mt-3">
@@ -27,6 +27,18 @@
   </div>
 
   <script>
+    const editIndex = localStorage.getItem('editIndex');
+    const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+
+    if (editIndex !== null) {
+      const c = contacts[editIndex];
+      document.getElementById('name').value = c.name;
+      document.getElementById('email').value = c.email;
+      document.getElementById('phone').value = c.phone;
+      document.getElementById('address').value = c.address;
+      document.getElementById('formTitle').textContent = 'Edit contact';
+    }
+
     function handleSave(e) {
       e.preventDefault();
 
@@ -37,13 +49,17 @@
         address: document.getElementById('address').value
       };
 
-      let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-      contacts.push(contact);
-      localStorage.setItem('contacts', JSON.stringify(contacts));
+      if (editIndex !== null) {
+        contacts[editIndex] = contact;
+        localStorage.removeItem('editIndex');
+      } else {
+        contacts.push(contact);
+      }
 
-      // Volver a la página principal
+      localStorage.setItem('contacts', JSON.stringify(contacts));
       window.location.href = 'index.html';
     }
   </script>
 </body>
 </html>
+*
